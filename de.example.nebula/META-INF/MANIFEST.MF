@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MySwtWindow
+Bundle-SymbolicName: de.example.MinSwtWindow; singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.example.application.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.swt,
+ org.eclipse.jface
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.eclipse.swt

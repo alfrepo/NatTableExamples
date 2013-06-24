@@ -1,0 +1,1 @@
+java -cp org.eclipse.swt_3.100.1.v4234e.jar;org.eclipse.swt.win32.win32.x86_64-3.7.2.v3740f.jar;NatTableExamples-0.9.0.jar org.eclipse.nebula.widgets.nattable.examples.NatTableExamples
