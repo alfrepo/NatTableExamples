@@ -59,100 +59,31 @@ public class PercentageMBarDecorator extends CellPainterWrapper implements Liste
         percentValueInt = Math.max(0, percentValueInt);
 
         double percentValueDouble = (percentValueInt) / 100.0;
+        Rectangle bar = new Rectangle(rectangle.x, rectangle.y, (int) (rectangle.width * percentValueDouble), rectangle.height);
 
-        Rectangle bar = new Rectangle(rectangle.x, rectangle.y, (int) (rectangle.width * percentValueDouble),
-                rectangle.height);
+//        Color color1 = CellStyleUtil.getCellStyle(cell, configRegistry).getAttributeValue( PERCENTAGE_BAR_COMPLETE_REGION_START_COLOR);
+//        Color color2 = CellStyleUtil.getCellStyle(cell, configRegistry).getAttributeValue( PERCENTAGE_BAR_COMPLETE_REGION_END_COLOR);
 
-        Color color1 = CellStyleUtil.getCellStyle(cell, configRegistry).getAttributeValue(
-                PERCENTAGE_BAR_COMPLETE_REGION_START_COLOR);
-        Color color2 = CellStyleUtil.getCellStyle(cell, configRegistry).getAttributeValue(
-                PERCENTAGE_BAR_COMPLETE_REGION_END_COLOR);
-        if (color1 == null) {
-            color1 = DEFAULT_COMPLETE_REGION_START_COLOR;
-        }
-        if (color2 == null) {
-            color2 = DEFAULT_COMPLETE_REGION_END_COLOR;
-        }
-
-        Color barColor = blendColors(percentValueDouble, color1, color2);
+        Color barColor = getColor(percentValueDouble);
 
         gc.setBackground(barColor);
         gc.fillRectangle(bar);
 
-        Color incompleteRegionColor = CellStyleUtil.getCellStyle(cell, configRegistry).getAttributeValue(
-                PERCENTAGE_BAR_INCOMPLETE_REGION_COLOR);
-        if (incompleteRegionColor != null) {
-            Region incompleteRegion = new Region();
-
-            incompleteRegion.add(rectangle);
-            incompleteRegion.subtract(bar);
-            Color originalBackgroundColor = gc.getBackground();
-            gc.setBackground(incompleteRegionColor);
-            gc.fillRectangle(incompleteRegion.getBounds());
-            gc.setBackground(originalBackgroundColor);
-
-            incompleteRegion.dispose();
-        }
         super.paintCell(cell, gc, rectangle, configRegistry);
     }
-
-    /* percent is in [0,1] */
-    Color blendColors(double percent, Color colorStart, Color colorEnd) {
-
-        AColor bg = new AColor(colorStart);
-        bg.a = 1.0 - percent;
-
-        AColor fg = new AColor(colorEnd);
-        fg.a = percent;
-
-        // The result
-        AColor r = new AColor();
-        r.a = 1 - (1 - fg.a) * (1 - bg.a); // 0.75
-        r.r = fg.r * fg.a / r.a + bg.r * bg.a * (1 - fg.a) / r.a; // 0.67
-        r.g = fg.g * fg.a / r.a + bg.g * bg.a * (1 - fg.a) / r.a; // 0.33
-        r.b = fg.b * fg.a / r.a + bg.b * bg.a * (1 - fg.a) / r.a; // 0.00
-
-        return r.getColor();
+    
+    private Color getColor(double percentage){
+    	Color green = GUIHelper.getColor(new RGB(189, 255, 197)); 
+    	Color yellow = GUIHelper.getColor(new RGB(255, 237, 189)); 
+    	Color red = GUIHelper.getColor( new RGB(255, 184, 184));
+    	if(percentage<0.7){
+    		return green;
+    	} else if(percentage< 0.80){
+    		return yellow;
+    	}else{
+    		return red;
+    	}
     }
 
-    class AColor {
-        final int maxRGBColorValue = 255;
-
-        double r;
-        double g;
-        double b;
-        double a;
-
-        AColor() {
-        };
-
-        AColor(double colorR, double colorg, double colorb, double alpha) {
-            r = colorR;
-            g = colorg;
-            b = colorb;
-            a = alpha;
-        }
-
-        AColor(Color c) {
-            r = c.getRed() / 255.0;
-            g = c.getGreen() / 255.0;
-            b = c.getBlue() / 255.0;
-        }
-
-        Color getColor() {
-            int ri = (int) (r * maxRGBColorValue);
-            int gi = (int) (g * maxRGBColorValue);
-            int bi = (int) (b * maxRGBColorValue);
-            return GUIHelper.getColor(new RGB(ri, gi, bi));
-        }
-    }
-
-    @Override
-    public void handleEvent(Event event) {
-        ICellPainter painter = getWrappedPainter();
-        if (painter instanceof Listener) {
-            ((Listener) painter).handleEvent(event);
-        }
-    }
 
 }
