@@ -13,6 +13,6 @@ public final class Fonts {
     private static final int HEADER_FONT_HEIGHT = 8;
     public static final Font HEADER_FONT = GUIHelper.getFont(new FontData("Verdana", HEADER_FONT_HEIGHT, SWT.NORMAL));
     
-    public static final Font SELECTION_FONT = HEADER_FONT;
+    public static final Font HEADER_SELECTION_FONT = HEADER_FONT;
 
 }

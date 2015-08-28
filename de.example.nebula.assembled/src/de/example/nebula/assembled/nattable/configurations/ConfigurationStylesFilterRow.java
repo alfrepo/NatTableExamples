@@ -13,9 +13,7 @@ import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
 import de.example.nebula.assembled.nattable.constants.Colors;
 import de.example.nebula.assembled.nattable.constants.IdsNattable;
 
-public class ConfigurationStyleFilterRow implements IConfiguration {
-
-    public static final String FILTER_ROW = GridRegion.FILTER_ROW;
+public class ConfigurationStylesFilterRow implements IConfiguration {
 
     @Override
     public void configureLayer(ILayer layer) {
@@ -27,8 +25,7 @@ public class ConfigurationStyleFilterRow implements IConfiguration {
         // FILTER ROW - Shade the row to be slightly darker than the blue background.
         final Style rowStyle = new Style();
         rowStyle.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, Colors.FILTER_ROW_COLOR);
-        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, rowStyle, DisplayMode.NORMAL,
-                FILTER_ROW);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, rowStyle, DisplayMode.NORMAL, GridRegion.FILTER_ROW);
 
     }
 

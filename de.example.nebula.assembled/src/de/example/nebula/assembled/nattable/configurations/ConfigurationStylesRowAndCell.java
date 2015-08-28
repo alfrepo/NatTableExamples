@@ -21,7 +21,7 @@ import org.eclipse.nebula.widgets.nattable.style.Style;
 
 import de.example.nebula.assembled.nattable.constants.Colors;
 
-public class ConfigurationStyleRowAndCell extends DefaultRowStyleConfiguration {
+public class ConfigurationStylesRowAndCell extends DefaultRowStyleConfiguration {
 
     public static final String COLUMN_LABELPREFIX = "COLUMN_LABEL_";
     public static final String DIRTY_CELL_LABEL = "DIRTY_CELL";
@@ -87,7 +87,7 @@ public class ConfigurationStyleRowAndCell extends DefaultRowStyleConfiguration {
     private static final BorderStyle REQUIRED_CELL_BORDER_STYLE = new BorderStyle(3, Colors.REQUIRED_CELL_BORDER_COLOR,
             LineStyleEnum.SOLID);
 
-    public ConfigurationStyleRowAndCell(GridLayer gridLayer) {
+    public ConfigurationStylesRowAndCell(GridLayer gridLayer) {
         this.oddRowBgColor = Colors.ODD_ROW_COLOR;
         this.evenRowBgColor = Colors.EVEN_ROW_COLOR;
 

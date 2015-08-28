@@ -1,14 +1,10 @@
 package de.example.nebula.assembled.nattable;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.nebula.widgets.nattable.NatTable;
-import org.eclipse.nebula.widgets.nattable.config.AbstractUiBindingConfiguration;
-import org.eclipse.nebula.widgets.nattable.config.CellConfigAttributes;
 import org.eclipse.nebula.widgets.nattable.config.ConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.config.DefaultNatTableStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.data.IDataProvider;
-import org.eclipse.nebula.widgets.nattable.grid.GridRegion;
 import org.eclipse.nebula.widgets.nattable.grid.data.DefaultCornerDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.data.DummyBodyDataProvider;
 import org.eclipse.nebula.widgets.nattable.grid.layer.ColumnHeaderLayer;
@@ -20,24 +16,9 @@ import org.eclipse.nebula.widgets.nattable.layer.AbstractLayerTransform;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.ILayer;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
-import org.eclipse.nebula.widgets.nattable.painter.cell.ButtonCellPainter;
-import org.eclipse.nebula.widgets.nattable.painter.cell.ImagePainter;
-import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
-import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.CellPainterDecorator;
 import org.eclipse.nebula.widgets.nattable.reorder.ColumnReorderLayer;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer;
-import org.eclipse.nebula.widgets.nattable.sort.ISortModel;
-import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
-import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
-import org.eclipse.nebula.widgets.nattable.style.Style;
-import org.eclipse.nebula.widgets.nattable.ui.action.IMouseAction;
-import org.eclipse.nebula.widgets.nattable.ui.binding.UiBindingRegistry;
-import org.eclipse.nebula.widgets.nattable.ui.matcher.CellLabelMouseEventMatcher;
-import org.eclipse.nebula.widgets.nattable.ui.matcher.MouseEventMatcher;
-import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
-import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.viewport.ViewportLayer;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
@@ -117,54 +98,6 @@ public class Table {
         //Step 3: Apply the Custom style Painter to the cells, annotated by the Label "CUSTOM_CELL_LABEL"
         ConfigurationAll.addCustomConfiguration(natTable, gridLayer, new SortModel(natTable));
  
-        
-                //3.1 new painter
-                final ButtonCellPainter buttonPainter = new ButtonCellPainter(
-                            new CellPainterDecorator(
-                                    new TextPainter(), CellEdgeEnum.RIGHT, new ImagePainter(GUIHelper.getImage("preferences"))
-                            )
-                        );
-         
-                //3.2 make painter responsible for drawing CUSTOM_CELL_LABEL annotated cells 
-                configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER,
-                        buttonPainter,
-                        DisplayMode.NORMAL,
-                        CUSTOM_CELL_LABEL);
-         
-                 
-                //3.3 Add the listener to the button
-                buttonPainter.addClickListener(new IMouseAction() {
-                     
-                    @Override
-                    public void run(NatTable natTable, MouseEvent event) {
-                        System.out.println("MouseClick");
-                    }
-                });
-                 
-                 
-                //3.4 set the style for the CUSTOM_CELL_LABEL annotated cells 
-                Style style = new Style();
-                style.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, GUIHelper.COLOR_WHITE);   // Set the color of the cell. This is picked up by the button painter to style the button
-         
-                configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, style, DisplayMode.NORMAL, CUSTOM_CELL_LABEL);
-                configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, style, DisplayMode.SELECT, CUSTOM_CELL_LABEL);
-                 
-             
-                //3.5 add Mouse listener to use the Painter on Mouse event
-                natTable.addConfiguration(new AbstractUiBindingConfiguration() {
-                     
-                    @Override
-                    public void configureUiBindings(UiBindingRegistry uiBindingRegistry) {
-                        // Match a mouse event on the body, when the left button is clicked
-                        // and the custom cell label is present
-                        CellLabelMouseEventMatcher mouseEventMatcher = new CellLabelMouseEventMatcher(
-                                                                            GridRegion.BODY,
-                                                                            MouseEventMatcher.LEFT_BUTTON,
-                                                                            CUSTOM_CELL_LABEL);
-                        // Inform the button painter of the click.
-                        uiBindingRegistry.registerMouseDownBinding(mouseEventMatcher, buttonPainter);
-                    }
-                });
                  
         //Step 4 now apply the configuration to the NatTable
             //apply the style, which will draw the data into the Table
